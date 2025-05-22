@@ -1,0 +1,81 @@
+---
+name: Setup TypeScript Development Environment
+
+on:
+  workflow_dispatch:  # Allow manual triggering
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  setup-typescript-environment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install TypeScript and development dependencies
+        run: |
+          npm init -y
+          npm install typescript --save-dev
+          npm install ts-node --save-dev
+          npm install @types/node --save-dev
+
+      - name: Set up TypeScript configuration
+        run: |
+          npx tsc --init --target ES2020 --module commonjs --strict \
+            --esModuleInterop --outDir dist
+
+      - name: Install and configure ESLint
+        run: |
+          npm install eslint @typescript-eslint/parser \
+            @typescript-eslint/eslint-plugin --save-dev
+          cat > .eslintrc.json << EOF
+          {
+            "parser": "@typescript-eslint/parser",
+            "extends": [
+              "eslint:recommended",
+              "plugin:@typescript-eslint/recommended"
+            ],
+            "parserOptions": {
+              "ecmaVersion": 2020,
+              "sourceType": "module"
+            },
+            "plugins": [
+              "@typescript-eslint"
+            ],
+            "rules": {}
+          }
+          EOF
+
+      - name: Create sample TypeScript file
+        run: |
+          mkdir -p src
+          cat > src/index.ts << EOF
+          function greet(name: string): string {
+            return \`Hello, \${name}!\`;
+          }
+
+          console.log(greet("GitHub Copilot"));
+          EOF
+
+      - name: Verify TypeScript compilation
+        run: npx tsc
+
+      - name: Run ESLint
+        run: npx eslint . --ext .ts
+
+      - name: Run sample TypeScript code
+        run: npx ts-node src/index.ts
