@@ -18,7 +18,9 @@ class SemanticRoomSearchPlugin:
         return self.openai.embeddings.create(
             input=[text],
             model=self.embedding_model
-        ).data[0].embedding    @kernel_function(description="セマンティック検索でホテルの客室を検索します。")
+        ).data[0].embedding    
+    
+    @kernel_function(description="セマンティック検索でホテルの客室を検索します。")
     def search_rooms_by_description(
         self,
         query: Annotated[str, "ユーザーが探している客室タイプの説明。"]
