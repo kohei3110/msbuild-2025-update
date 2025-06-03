@@ -27,7 +27,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Run evaluation
-        uses: microsoft/ai-agent-eval@v1-beta
+        uses: microsoft/ai-agent-eval@b5395bc
         with:
           azure-ai-project-endpoint: ${{ secrets.AZURE_AI_PROJECT_ENDPOINT }}
           deployment-name: ${{ secrets.DEPLOYMENT_NAME }}
