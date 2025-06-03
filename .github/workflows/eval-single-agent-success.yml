@@ -40,6 +40,6 @@ jobs:
       with:
         name: evaluation-results-${{ github.run_id }}
         path: |
-          .github/workflows/evals/evaluation_dataset.jsonl
+          .github/workflows/evals/evaluation_dataset_success.jsonl
           .github/workflows/evals/*.log
         retention-days: 30
