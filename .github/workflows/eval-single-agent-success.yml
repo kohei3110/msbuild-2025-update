@@ -1,4 +1,4 @@
-name: Agent Evaluation CI
+name: Agent Evaluation CI (Success Case)
 
 on:
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
         PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
         RESOURCE_GROUP_NAME: ${{ secrets.RESOURCE_GROUP_NAME }}
       run: |
-        python ci_evaluation.py
+        python ci_evaluation_success.py
     
     - name: Upload evaluation results
       if: always()  # 成功・失敗に関係なく実行
